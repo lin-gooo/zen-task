@@ -6,6 +6,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from tortoise import Tortoise
+from hypercorn.asyncio import serve
+from hypercorn.config import Config
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 
@@ -25,7 +27,7 @@ async def lifespan(_app: FastAPI):
     # ################## before the app starts ##################
     logger.info(f"ZenTask Server {env} Start...")
 
-    await Tortoise.init(settings.database.to_dict())
+    # await Tortoise.init(settings.database.to_dict())
     await register_routers()
 
     yield
@@ -59,7 +61,7 @@ app.add_middleware(
 )
 
 
-if sys.platform.lower() == "win32" or os.name.lower() == "nt":
-    from asyncio import set_event_loop_policy, WindowsProactorEventLoopPolicy
-
-    set_event_loop_policy(WindowsProactorEventLoopPolicy())
+if __name__ == "__main__":
+    config = Config()
+    config.bind = ["0.0.0.0:8000"]
+    asyncio.run(serve(app, config))

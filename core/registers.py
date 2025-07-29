@@ -7,8 +7,6 @@ async def register_routers():
 
     prefix_directory_mappings = {
         "api": "api",
-        "internal": "internal",
-        "api/external": "external",
     }
     for api_prefix, folder_prefix in prefix_directory_mappings.items():
         for folder_name in os.listdir(folder_prefix):

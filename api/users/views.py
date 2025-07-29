@@ -12,8 +12,5 @@ async def pwd_login(
     request: Request,
     phone: str = Body(),
     password: str = Body(),
-    source: int = Body(UserSource.EDUCATE.value),
 ):
-    await services.check_password(phone, source, password)
-    data = await services.login(phone, source=source)
-    return ok(data)
+    pass
